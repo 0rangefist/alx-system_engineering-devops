@@ -1,0 +1,2 @@
+#!/bin/bash
+echo $( cut -c1 /etc/passwd | tr -d '\n')
