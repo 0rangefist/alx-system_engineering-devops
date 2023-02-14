@@ -1,1 +1,7 @@
 This is just a test
+another line
+Yet another line
+Wow! Another line
+You've got to be kidding me
+No Wayecho No Waycat -n testgrep 'bin' /etc/passwd
+No Wayecho No Wayecho No Waycat -n testgrep bin /etc/passwd >> test!
