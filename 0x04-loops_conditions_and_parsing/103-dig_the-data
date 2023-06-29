@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# This script uses awk to extranct and display the visitor IP along with the HTTP status code from an Apache log file and groups visitors by IP and HTTP status code. [ OCCURENCE_NUMBER IP HTTP_CODE ]
+
+awk '{ print $1, $9 }' "apache-access.log" | sort | uniq -c | sort -nr
