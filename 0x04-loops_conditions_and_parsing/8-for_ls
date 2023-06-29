@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# This script displays in list form the content of the current directory without the number prefix (1-, 2-, 3-, etc)
+
+list=$(ls ./)
+
+for item in $list
+do
+	output=$(echo "$item" | cut -d '-' -f2)
+	echo "$output"
+done
