@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# This script kills the script `4-to_infinity_and_beyond` 
+
+kill "$(pgrep -f ./4-to_infinity_and_beyond)"
+# alternatively
+# kill "$(ps -aux | grep ./4-to_infinity_and_beyond | grep -v grep | awk '{p
+# rint $2}')"
