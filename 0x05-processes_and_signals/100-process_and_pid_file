@@ -2,11 +2,18 @@
 # This script displays creates the file /var/run/myscript.pid containing its PID. Prints "To infinity and beyond" indefinitely & prints "I hate the kill command" upon receiving a SIGTERM signal, "Y U no love me?!" when SIGINT is received. Deletes the file when SIGQUIT or SIGTERM is received.
 
 # create the file with PID of the script saved in it
-sudo bash -c "echo $$ > /var/run/myscript.pid"
-trap 'echo "I hate the kill command" ; kill -3 "$(echo $$)"' SIGTERM
-trap 'echo "Y U no love me?!"' SIGINT
-trap 'sudo bash -c "rm -f /var/run/myscript.pid" ; exit 0' SIGQUIT
+file=/var/run/myscript.pid
+echo $$ > $file
 
+cleanup()
+{
+	rm $file
+	exit 0
+}
+
+trap 'echo "I hate the kill command" ; cleanup' SIGTERM
+trap 'echo "Y U no love me?!"' SIGINT
+trap 'cleanup' SIGQUIT
 
 while true
 do
