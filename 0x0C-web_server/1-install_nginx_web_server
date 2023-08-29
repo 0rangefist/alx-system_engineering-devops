@@ -15,6 +15,6 @@ echo "Hello World!" > index.html
 mv index.html /var/www/html
 
 # restart nginx
-/etc/init.d/nginx restart
-# alternative restart
-# service nginx restart
+service nginx restart
+# older alternative for restart
+#/etc/init.d/nginx restart
