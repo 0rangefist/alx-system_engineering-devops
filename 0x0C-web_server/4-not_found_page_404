@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# this script installs nginx as webserver on ubuntu machine
+
+# install nginx
+apt update -y
+apt install -y nginx
+
+# allow firewall connection on HTTP Port 80
+ufw allow 'Nginx HTTP'
+
+# create index.html to be used at root
+echo "Hello World!" > index.html
+
+# move the index.html to root folder
+mv index.html /var/www/html
+
+# config file path
+nginx_config="/etc/nginx/sites-available/default"
+
+# create 404.html page
+echo "Ceci n'est pas une page" > 404.html
+
+# move the 404.html to root folder
+mv 404.html /var/www/html
+
+# load the custom 404 page into the server
+if ! grep -q "error_page 404 /404.html;" "$nginx_config"; then
+	sed -i "/server_name _;/a \\
+	\\
+	error_page 404 /404.html;\\
+	location /404.html {\\
+		root /var/www/html;\\
+	}" "$nginx_config"
+fi
+
+# append redirection after server_name line
+if ! grep -q "location /redirect_me {" "$nginx_config"; then
+        sed -i "/server_name _;/a \\
+	\\
+	location /redirect_me {\\
+		return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\\
+	}" "$nginx_config"
+fi
+
+# restart nginx
+service nginx restart
+# older alternative for restart
+#/etc/init.d/nginx restart
