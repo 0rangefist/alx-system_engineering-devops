@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# this script installs an HAProxy load balancer and sets it up to point to 2 servers
+
+# install HAProxy
+apt update -y
+apt install -y haproxy
+
+# edit HAProxy config
+{
+    echo ""
+    echo "frontend myfrontend"
+    echo -e "\tbind *:80"
+    echo -e "\tdefault_backend web_servers\n"
+    echo "backend web_servers"
+    echo -e "\tbalance roundrobin"
+    echo -e "\tserver web-01 100.25.34.211:80 check"
+    echo -e "\tserver web-02 18.206.206.33:80 check"
+} >> /etc/haproxy/haproxy.cfg
+
+# restart HAProxy
+service haproxy restart
