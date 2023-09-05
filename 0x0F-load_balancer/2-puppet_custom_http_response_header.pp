@@ -1,51 +1,35 @@
 # Puppet config for nginx server
 
+# update OS
+exec { 'apt update':
+        command => '/usr/bin/apt update',
+}
+
 # install nginx
 package { 'nginx':
-  ensure => installed,
+        ensure  => 'installed',
+        require => Exec['apt update']
 }
 
-# start the service
-service { 'nginx':
-  ensure => running,
-  enable => true,
+# add custom index.html
+file {'/var/www/html/index.html':
+        content => 'Hello World!'
 }
 
-# create the index file with content "Hello World!"
-# and notify the nginx service to restart
-file { '/var/www/html/index.html':
-  ensure  => file,
-  content => "Hello World!\n",
-  require => Package['nginx'],
-  notify  => Service['nginx'],
+# add 301 redirect
+exec {'redirect':
+        command  => 'sed -i "24i\        rewrite ^/redirect_me https://example.com permanent;" /etc/nginx/sites-available/default',
+        provider => 'shell'
 }
 
-# create the nginx default config with basic settings,
-# a 301 redirect and notify nginx service to restart
-file { '/etc/nginx/sites-available/default':
-  ensure  => file,
-  content => '
-server {
-  listen 80;
- 
-  add_header X-Served-By $hostname;
-
-  server_name _;
-
-  root /var/www/html;
-  index index.html index.nginx-debian.html;
-
-  location / {
-    # First attempt to serve request as file, then
-    # as directory, then fall back to displaying a 404.
-    try_files $uri $uri/ =404;
-  }
-
-  location /redirect_me {
-    return 301 "https://www.example.com/your-target-url";
-  }
+# add custom response header
+exec {'response header':
+        command  => 'sed -i "25i\        add_header X-Served-By \$hostname;" /etc/nginx/sites-available/default',
+        provider => 'shell'
 }
-',
-  require => [File['/var/www/html/index.html'], Package['nginx']],
-  notify  => Service['nginx'],
+
+# ensure nginx service is running
+service {'nginx':
+        ensure  => running,
+        require => Package['nginx']
 }
