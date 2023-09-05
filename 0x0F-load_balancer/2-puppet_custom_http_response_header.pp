@@ -1,12 +1,11 @@
 # Puppet config for nginx server
-class nginx_install {
   package { 'nginx':
     ensure => installed,
   }
 
   service { 'nginx':
-    ensure => 'running',
-    enable => true,
+    ensure  => 'running',
+    enable  => true,
     require => Package['nginx'],
   }
 
@@ -33,14 +32,14 @@ class nginx_install {
     content => "
 server {
   listen 80;
-  add_header X-Served-By $hostname;
+  add_header X-Served-By ${hostname};
   server_name _;
 
   root /var/www/html;
   index index.html index.nginx-debian.html;
 
   location / {
-    try_files $uri $uri/ =404;
+    try_files ${uri} ${uri}/ =404;
   }
 
   location /redirect_me {
@@ -62,4 +61,3 @@ server {
     refreshonly => true,
     subscribe   => File['/etc/nginx/sites-available/default'],
   }
-}
