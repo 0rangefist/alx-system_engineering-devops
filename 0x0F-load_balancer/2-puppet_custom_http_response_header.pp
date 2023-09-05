@@ -1,3 +1,4 @@
+# Puppet config for nginx server
 class nginx_install {
   package { 'nginx':
     ensure => installed,
