@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# this script fixes and makes nginx config listen on port 80
+
+# remove the offending default config in the sites-enabled dir
+rm /etc/nginx/sites-enabled/default
+
+# make a symlink from the correct default config 
+ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+
+# restart the nginx server
+service nginx restart
