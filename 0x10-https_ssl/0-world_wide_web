@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# this script displays info about subdomains
+
+function print_subdomain_info() {
+    local domain="$1"
+    local subdomain="${2:-www lb-01 web-01 web-02}"
+
+    for sub in $subdomain; do
+        subdomain_ip=$(dig +short "$sub.$domain")
+        record_type=$(dig "$sub.$domain" | grep -A1 'ANSWER SECTION:' | awk '{print $4}' | tail -n 1)
+        
+        if [ -n "$subdomain_ip" ]; then
+            echo "The subdomain $sub is a $record_type record and points to $subdomain_ip"
+	else
+            exit
+	fi
+    done
+}
+
+if [ "$#" -eq 1 ] || [ "$#" -eq 2 ]; then
+    print_subdomain_info "$1" "$2"
+else
+    echo "Usage: $0 <domain> <subdomain>"
+fi
