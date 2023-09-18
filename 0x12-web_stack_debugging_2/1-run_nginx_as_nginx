@@ -15,7 +15,7 @@ chmod 700 /etc/nginx/nginx.conf
 sed -i 's/listen 80;/listen 8080;/g' /etc/nginx/sites-enabled/default
 
 # kill apache2 running on port 8080
-pkill apache2
+pkill -f apache2
 
 # Start the Nginx service as the "nginx" user
 sudo -u $nginx_user service nginx start

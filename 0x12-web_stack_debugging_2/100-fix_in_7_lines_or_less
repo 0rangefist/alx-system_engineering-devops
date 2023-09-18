@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# configures concisely nginx to use 'nginx' as user instead of 'root' 
+chown nginx:nginx /etc/nginx/nginx.conf
+chmod 700 /etc/nginx/nginx.conf
+sed -i 's/listen 80;/listen 8080;/g' /etc/nginx/sites-enabled/default
+pkill -f apache2
+sudo -u nginx service nginx start
