@@ -1,18 +1,16 @@
 #!/usr/bin/env bash
 # configures nginx to use 'nginx' as user instead of 'root' 
 
-# Define the Nginx user
-nginx_user="nginx"
-
 # Change the ownership and permissions of the Nginx config
 sed -i 's/#user www-data/user nginx/' /etc/nginx/nginx.conf
-chmod 644 /etc/nginx/nginx.conf
 
 # Modify the Nginx default site configuration to listen on port 8080
-sed -i 's/listen 80;/listen 8080;/g' /etc/nginx/sites-enabled/default
+sed -i 's/80/8080/g' /etc/nginx/sites-available/default
+
+chmod 644 /etc/nginx/nginx.conf
 
 # kill apache2 running on port 8080
-pkill -f apache2
+pkill apache2
 
 # Start the Nginx service as the "nginx" user
-sudo -u $nginx_user service nginx start
+sudo -u nginx service nginx start
