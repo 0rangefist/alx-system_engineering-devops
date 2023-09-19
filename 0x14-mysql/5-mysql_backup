@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# This script backs up all MySQL dbs on a server into  a tar ball
+
+# MySQL password
+password="$1"
+
+# Dump all databases into backup.sql file
+mysqldump -u root -p"${password}" --all-databases > backup.sql
+
+# Create the tar archive using date format
+archive_name="$(date +'%d-%m-%Y').tar.gz"
+tar -czvf "$archive_name" backup.sql
