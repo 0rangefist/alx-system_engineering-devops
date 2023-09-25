@@ -28,7 +28,7 @@ def get_employee_todos(employee_id):
         # Get number of completed tasks
         tasks_completed = 0
         for todo in todos:
-            if todo['completed']:
+            if todo.get('completed'):
                 tasks_completed += 1
 
         # Print out formatted data
@@ -36,11 +36,11 @@ def get_employee_todos(employee_id):
             employee_name, tasks_completed, total_tasks
         ))
         for todo in todos:
-            if todo['completed']:
-                print("\t " + todo['title'])
+            if todo.get('completed'):
+                print("\t " + todo.get('title'))
 
     except Exception:
-        pass
+        print("Something went wrong.")
 
 
 if __name__ == "__main__":
